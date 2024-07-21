@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            background-color: #046868;
+            color: white;
+            padding: 30px;
+            margin: 0;
+        }
+        table {
+            width: 80%;
+            margin: 30px auto;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 20px;
+            text-align: left;
+            font-size: 18px;
+        }
+        th {
+            background-color: #24d390;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button[type="submit"] {
+            background-color: green;
+            color: white;
+        }
+        button[type="submit"]:hover {
+            background-color: darkgreen;
+        }
+        .show-button {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            background-color: cornflowerblue;
+            color: white;
+        }
+        .show-button:hover {
+            background-color: royalblue;
+        }
+    </style>
+</head>
+<body>
+    <center><h1>Artistas y Canciones</h1></center>
+    
+    <h4>Recordatorio: No puedes eliminar un artista si tienes una cancion de el disponible en las tablas de abajo</h4>
+    <form action="http://localhost:8000/artista/add"><button type="submit">Agregar Artista</button></form>
+    <form action="http://localhost:8000/cancion/add2"><button type="submit">Agregar Canción</button></form>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in artista %}
+                <tr>
+                    <td>{{ i.nombre }}</td>
+                    <td>{{ i.telefono }}</td>
+                    <td>
+                        <form action="{% url 'actualizar artista' i.id %}" method="get" style="display:inline;">
+                            <button type="submit" style="background-color:green;color:white">Actualizar</button>
+                        </form>
+                        <form action="{% url 'eliminar_artista' i.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background-color:darkred;color:white">Eliminar</button>
+                        </form>
+                        
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Tabla de Canciones -->
+    
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Canción</th>
+                <th>Fecha de Publicación</th>
+                <th>Artista</th>
+                <th>Teléfono</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in cancion %}
+                <tr>
+                    
+                    <td>{{ e.nombreCa }}</td>
+                    <td>{{ e.Fecha_Publicacion }}</td>
+                    <td>{{ e.Artista.nombre }}</td>
+                    <td>{{ e.Artista.telefono }}</td>
+                    <td>
+                        
+                        <form action="{% url 'actualizar_cancion' e.id %}" method="get" style="display:inline;">
+                            <button type="submit" style="background-color:green;color:white">Actualizar</button>
+                        </form>
+                   
+                        <form action="{% url 'eliminar_cancion' e.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background-color:darkred;color:white">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+
